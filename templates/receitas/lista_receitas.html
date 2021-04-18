@@ -1,0 +1,94 @@
+{% load static%}
+<!-- ##### Best Receipe Area Start ##### -->
+<section class="best-receipe-area">
+    <div class="container">
+        <div class="row">
+            {%if lista_de_receitas%}
+                {% for receita in lista_de_receitas %}
+                    <!-- Single Best Receipe Area -->
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <div class="single-best-receipe-area mb-30">
+                            {% if receita.foto_receita == '' %}
+                                <img src="{% static 'img/bg-img/foto_receita.png' %}" alt="">
+                            {% else %}
+                                <img src="{{receita.foto_receita.url}}" alt="">
+                            {%endif%}
+                            <div class="receipe-content">
+                                <a href="{% url 'receita' receita.id%}">
+                                    <h5>{{ receita.nome_receita }}</h5>
+                                </a>
+
+                                <a href="{% url 'edita_receita' receita.id%}" type="button" class="btn btn-info">
+                                    Editar
+                            </a>
+
+                                <a href="{% url 'deleta_receita' receita.id%}" type="button" class="btn btn-danger">
+                                    Deletar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <p> 
+                        Receita não encontrada
+                    </p>
+                </div>
+            {% endif%}
+        </div>
+    </div>
+</section>
+<!-- ##### Best Receipe Area End ##### -->
+
+<!-- ##### Pagination ##### -->
+<section class="top-catagory-area section-padding-20-0">
+    <div class="container">
+
+        {% if lista_de_receitas.has_other_pages%}
+        
+            <ul class="pagination">
+
+                {% if lista_de_receitas.has_previous %}
+                
+                    <li class="page-item">
+                        <a href="?page={{lista_de_receitas.previous_page_number}}" class="page-link">&laquo;</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link">&laquo;</a>
+                    </li>
+                
+                {% endif%}
+
+                {% for pagina in lista_de_receitas.paginator.page_range %}
+                    {% if lista_de_receitas.number == pagina %}
+                        <li class="page-item active">
+                            <a class="page-link">
+                                {{pagina}}
+                            </a>
+                        </li>
+                    {% else %}                
+                        <li class="page-item">
+                            <a href="?page={{pagina}}" class="page-link">
+                                {{pagina}}
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                
+
+                {% if lista_de_receitas.has_next %}
+                    <li class="page-item">
+                        <a href="?page={{lista_de_receitas.next_page_number}}" class="page-link">&raquo;</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link">&raquo;</a>
+                    </li>
+                {% endif %}
+            </ul>
+        {% endif %}
+    </div>
+</section>
+<!-- ##### Pagination End ##### -->
